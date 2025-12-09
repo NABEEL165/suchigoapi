@@ -1,0 +1,243 @@
+{
+  "API_Endpoints": {
+    "1_Registration": {
+      "endpoint": "POST /api/register/",
+      "description": "Register a new user account",
+      "request_body": {
+        "username": "john_doe",
+        "email": "john@example.com",
+        "password": "securepassword123",
+        "first_name": "John",
+        "last_name": "Doe"
+      },
+      "success_response": {
+        "token": "9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b",
+        "user_id": 1,
+        "email": "john@example.com",
+        "username": "john_doe"
+      },
+      "error_response": {
+        "username": [
+          "A user with that username already exists."
+        ],
+        "email": [
+          "Enter a valid email address."
+        ]
+      }
+    },
+    "2_Login": {
+      "endpoint": "POST /api/login/",
+      "description": "Authenticate user and get access token",
+      "request_body": {
+        "username": "john_doe",
+        "password": "securepassword123"
+      },
+      "success_response": {
+        "token": "9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b",
+        "user_id": 1,
+        "email": "john@example.com",
+        "username": "john_doe"
+      },
+      "error_response": {
+        "non_field_errors": [
+          "Unable to log in with provided credentials."
+        ]
+      }
+    },
+    "3_Home": {
+      "endpoint": "GET /api/home/",
+      "description": "Get user dashboard information",
+      "headers": {
+        "Authorization": "Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+      },
+      "success_response": {
+        "username": "john_doe",
+        "pending_bills": 2,
+        "scheduled_pickups": 1,
+        "message": "Welcome back, john_doe!"
+      }
+    },
+    "4_Profile": {
+      "endpoint_GET": "GET /api/profile/",
+      "description": "Get user profile information",
+      "headers": {
+        "Authorization": "Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+      },
+      "success_response": {
+        "id": 1,
+        "phone_number": "+1234567890",
+        "address": "123 Main St, City, State 12345",
+        "profile_picture": null,
+        "user": {
+          "id": 1,
+          "username": "john_doe",
+          "email": "john@example.com",
+          "first_name": "John",
+          "last_name": "Doe"
+        }
+      },
+      "endpoint_PATCH": "PATCH /api/profile/",
+      "update_request_body": {
+        "phone_number": "+1987654321",
+        "address": "456 New Street, Another City, State 67890"
+      },
+      "update_success_response": {
+        "id": 1,
+        "phone_number": "+1987654321",
+        "address": "456 New Street, Another City, State 67890",
+        "profile_picture": null,
+        "user": {
+          "id": 1,
+          "username": "john_doe",
+          "email": "john@example.com",
+          "first_name": "John",
+          "last_name": "Doe"
+        }
+      }
+    },
+    "5_Settings": {
+      "endpoint_GET": "GET /api/settings/",
+      "description": "Get user preferences",
+      "headers": {
+        "Authorization": "Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+      },
+      "success_response": {
+        "id": 1,
+        "receive_notifications": true,
+        "dark_mode": false,
+        "language": "en"
+      },
+      "endpoint_PATCH": "PATCH /api/settings/",
+      "update_request_body": {
+        "receive_notifications": false,
+        "dark_mode": true,
+        "language": "es"
+      },
+      "update_success_response": {
+        "id": 1,
+        "receive_notifications": false,
+        "dark_mode": true,
+        "language": "es"
+      }
+    },
+    "6_Bills": {
+      "endpoint_GET_list": "GET /api/bills/",
+      "description": "List all user bills",
+      "headers": {
+        "Authorization": "Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+      },
+      "success_response": [
+        {
+          "id": 1,
+          "amount": "150.00",
+          "due_date": "2023-12-31",
+          "is_paid": false,
+          "description": "Monthly service fee",
+          "created_at": "2023-11-01T10:30:00Z",
+          "user": 1
+        },
+        {
+          "id": 2,
+          "amount": "75.50",
+          "due_date": "2023-11-15",
+          "is_paid": true,
+          "description": "Additional service charge",
+          "created_at": "2023-10-15T14:20:00Z",
+          "user": 1
+        }
+      ],
+      "endpoint_POST": "POST /api/bills/",
+      "create_request_body": {
+        "amount": "200.00",
+        "due_date": "2023-12-15",
+        "description": "New service bill"
+      },
+      "create_success_response": {
+        "id": 3,
+        "amount": "200.00",
+        "due_date": "2023-12-15",
+        "is_paid": false,
+        "description": "New service bill",
+        "created_at": "2023-11-10T09:15:00Z",
+        "user": 1
+      }
+    },
+    "7_Pickups": {
+      "endpoint_GET_list": "GET /api/pickups/",
+      "description": "List all user pickups",
+      "headers": {
+        "Authorization": "Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+      },
+      "success_response": [
+        {
+          "id": 1,
+          "scheduled_date": "2023-11-20T14:00:00Z",
+          "status": "scheduled",
+          "items_description": "2 large boxes and 1 small bag",
+          "pickup_address": "123 Main St, City, State 12345",
+          "created_at": "2023-11-01T10:30:00Z",
+          "user": 1
+        }
+      ],
+      "endpoint_POST": "POST /api/pickups/",
+      "create_request_body": {
+        "scheduled_date": "2023-11-25T10:00:00Z",
+        "items_description": "Electronics and documents",
+        "pickup_address": "456 New Street, Another City, State 67890"
+      },
+      "create_success_response": {
+        "id": 2,
+        "scheduled_date": "2023-11-25T10:00:00Z",
+        "status": "pending",
+        "items_description": "Electronics and documents",
+        "pickup_address": "456 New Street, Another City, State 67890",
+        "created_at": "2023-11-10T16:45:00Z",
+        "user": 1
+      }
+    },
+    "8_Addresses": {
+      "endpoint_GET_list": "GET /api/addresses/",
+      "description": "List all user addresses",
+      "headers": {
+        "Authorization": "Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b"
+      },
+      "success_response": [
+        {
+          "id": 1,
+          "street": "123 Main St",
+          "city": "Cityville",
+          "state": "State",
+          "zip_code": "12345",
+          "is_default": true,
+          "user": 1
+        },
+        {
+          "id": 2,
+          "street": "456 New Street",
+          "city": "Another City",
+          "state": "State",
+          "zip_code": "67890",
+          "is_default": false,
+          "user": 1
+        }
+      ],
+      "endpoint_POST": "POST /api/addresses/",
+      "create_request_body": {
+        "street": "789 Oak Avenue",
+        "city": "Different City",
+        "state": "State",
+        "zip_code": "54321",
+        "is_default": false
+      },
+      "create_success_response": {
+        "id": 3,
+        "street": "789 Oak Avenue",
+        "city": "Different City",
+        "state": "State",
+        "zip_code": "54321",
+        "is_default": false,
+        "user": 1
+      }
+    }
+  }
+}
